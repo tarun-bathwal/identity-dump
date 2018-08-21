@@ -10,13 +10,13 @@ exports.adduser = function(req,res){
     var hostname=os.hostname();
     stream.write(newdata+'\r\n',()=>{
         var maildata ={
-            from:'sender@gmail.com',
-            to:'abc@gmail.com',
+            from:'tarun.bathwal@gmail.com',
+            to:'tarun.bathwal@gmail.com',
             subject:'hey',
             html:"Hi<br><br>Welcome to our network! Here’s your profile informations<br><br>Email: "+data.email+"<br>Date of Birth: "+data.birthday+"<br>Machine :"+hostname
         }
-        var api_key = 'apikey_mailgun';
-        var domain = 'domain_mailgun';
+        var api_key = 'f33fdec315b5e41d92a17ed7ef27a76a-a4502f89-fe1bf025';
+        var domain = 'sandbox8945fbeac82743e692d4ef7ada5f42bc.mailgun.org';
         var mailgun = new Mailgun({apiKey: api_key, domain: domain});
         mailgun.messages().send(maildata, function (err, body) {
             if (err) {

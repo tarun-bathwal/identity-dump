@@ -4,11 +4,7 @@ const Extension = require('joi-date-extensions');
 const joi = Joi.extend(Extension);
 let {AgeFromDateString, AgeFromDate} = require('age-calculator');
 module.exports = ( req,res,next) => {
-
         const now = Date.now();
-        //const maxdob = new Date(now - (1000 * 60 * 60 * 24 * 365 * 16));
-        //const mindob = new Date(now - (1000 * 60 * 60 * 24 * 365 * 120));
-        
         const schema = joi.object().keys({
             name : joi.string().alphanum().max(30).required(),
             email : joi.string().email({minDomainAtoms:2}).required(),
