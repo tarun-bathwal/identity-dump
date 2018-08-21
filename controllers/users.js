@@ -4,19 +4,28 @@ const Mailgun = require('mailgun-js');
 const os=require("os");
 
 exports.adduser = function(req,res){
-    const data = req.body;;
-    var stream = fs.createWriteStream("users.txt",{flags:'a'});
+    //console.log(req);
+    const data = req.body;
+    var filename;
+    if(process.env.NODE_ENV=='dev')
+    {
+        filename="users.txt";
+    }
+    else{
+        filename="testuser.txt";
+    }
+    var stream = fs.createWriteStream(filename,{flags:'a'});
     var newdata=JSON.stringify(data);
     var hostname=os.hostname();
     stream.write(newdata+'\r\n',()=>{
         var maildata ={
-            from:'tarun.bathwal@gmail.com',
-            to:'tarun.bathwal@gmail.com',
+            from:'sender mail id',
+            to:data.email,
             subject:'hey',
             html:"Hi<br><br>Welcome to our network! Here’s your profile informations<br><br>Email: "+data.email+"<br>Date of Birth: "+data.birthday+"<br>Machine :"+hostname
         }
-        var api_key = 'f33fdec315b5e41d92a17ed7ef27a76a-a4502f89-fe1bf025';
-        var domain = 'sandbox8945fbeac82743e692d4ef7ada5f42bc.mailgun.org';
+        var api_key = 'mailgun api key';
+        var domain = 'mailgun domain';
         var mailgun = new Mailgun({apiKey: api_key, domain: domain});
         mailgun.messages().send(maildata, function (err, body) {
             if (err) {
@@ -30,7 +39,6 @@ exports.adduser = function(req,res){
                 });
             }
         });
-        
         stream.close();
     });
 }
@@ -41,8 +49,13 @@ exports.getuser = (req,res)=>{
     stream.on("data",(chunk)=>{
         requiredData+=chunk;
     });
+    stream.on("error",()=>{
+        res.json({
+            message:"no user exists"
+        });
+    });
     stream.on("end",()=>{
-        res.send(requiredData);
+        res.status(200).send(requiredData);
     });
     
 }
@@ -54,11 +67,17 @@ exports.getone = (req,res)=>{
     stream.on("data",(chunk)=>{
         requiredData+=chunk;
     });
+    stream.on("error",()=>{
+        res.json({
+            message:"no user exists"
+        });
+    });
     stream.on("end",()=>{
         var datas = requiredData.split("\r\n");
         datas.pop();
         if(id<=datas.length && id>=1){
-            res.send(datas[id-1]);
+            var x=JSON.parse(datas[id-1]);
+            res.json({data:x});
         }
         else{
             res.json({
@@ -74,11 +93,16 @@ exports.getlatest = (req,res)=>{
     stream.on("data",(chunk)=>{
         requiredData+=chunk;
     });
+    stream.on("error",()=>{
+        res.json({
+            message:"no user exists"
+        });
+    });
     stream.on("end",()=>{
         var datas = requiredData.split("\r\n");
         datas.pop();
         if(datas.length>0){
-            res.send(datas[datas.length-1]);
+            res.send({data:datas[datas.length-1]});
         }
         else{
             res.json({

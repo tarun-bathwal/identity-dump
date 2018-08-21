@@ -5,8 +5,17 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const app = express();
+console.log(process.env.NODE_ENV);
 
-app.use(logger('dev'));
+if(process.env.NODE_ENV=='dev')
+{
+  console.log("dev env");
+  app.use(logger('dev'));
+}
+else if(process.env.NODE_ENV=="test")
+{
+  console.log("test env");
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
