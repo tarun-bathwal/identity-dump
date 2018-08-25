@@ -12,6 +12,7 @@ If you don't perform this step, then the server doesn't work<br />
 If you don't have a valid mailgunkey or mailgundomain, the server won't be able to send you the email, though it will still create an entry in the required file. So, even if you don't have mailgun key and domain, enter any string without quotes in the .env file<br />
 4. npm run test // this command runs the tests. All the 6 tests must pass correctly. Data is written in testuser.txt file in the root folder. On every test run, testuser.txt is deleted and created new, so it will have only one entry at max.<br />
 5. npm run start // this starts the development server. You can now use POSTMAN to hit the APIs. Data is written and read from the users.txt file in the root folder.<br />
+6. Access the APIs at localhost:3000/ <br />
 <br />
 <br />
 APIs
