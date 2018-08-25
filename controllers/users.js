@@ -1,36 +1,38 @@
-const express = require('express');
+//const express = require('express');
 const fs = require("fs");
 const Mailgun = require('mailgun-js');
 const os=require("os");
+const environ=require('dotenv').config();
+var filename;
+if(process.env.NODE_ENV=='dev')
+{
+    
+    filename="users.txt";
+}
+else{
+    
+    filename="testuser.txt";
+}
 
 exports.adduser = function(req,res){
-    //console.log(req);
     const data = req.body;
-    var filename;
-    if(process.env.NODE_ENV=='dev')
-    {
-        filename="users.txt";
-    }
-    else{
-        filename="testuser.txt";
-    }
     var stream = fs.createWriteStream(filename,{flags:'a'});
     var newdata=JSON.stringify(data);
     var hostname=os.hostname();
     stream.write(newdata+'\r\n',()=>{
         var maildata ={
-            from:'sender mail id',
+            from:'tarun.bathwal@gmail.com',
             to:data.email,
             subject:'hey',
             html:"Hi<br><br>Welcome to our network! Here’s your profile informations<br><br>Email: "+data.email+"<br>Date of Birth: "+data.birthday+"<br>Machine :"+hostname
         }
-        var api_key = 'mailgun api key';
-        var domain = 'mailgun domain';
+        var api_key = process.env.mailgunkey;
+        var domain = process.env.mailgundomain;
         var mailgun = new Mailgun({apiKey: api_key, domain: domain});
         mailgun.messages().send(maildata, function (err, body) {
             if (err) {
                 res.json({
-                    message:"could not send the mail to the id"
+                    message: "could not send mail"
                 });
             }
             else{
@@ -44,7 +46,7 @@ exports.adduser = function(req,res){
 }
 
 exports.getuser = (req,res)=>{
-    var stream=fs.createReadStream("users.txt");
+    var stream=fs.createReadStream(filename);
     var requiredData='';
     stream.on("data",(chunk)=>{
         requiredData+=chunk;
@@ -55,14 +57,20 @@ exports.getuser = (req,res)=>{
         });
     });
     stream.on("end",()=>{
-        res.status(200).send(requiredData);
+        var datas = requiredData.split("\r\n");
+        datas.pop();
+        var finaldata=[];
+        datas.forEach(element => {
+            finaldata.push(JSON.parse(element));
+        });
+        res.status(200).send(finaldata);
     });
     
 }
 
 exports.getone = (req,res)=>{
     var id=req.params.id;
-    var stream=fs.createReadStream("users.txt");
+    var stream=fs.createReadStream(filename);
     var requiredData='';
     stream.on("data",(chunk)=>{
         requiredData+=chunk;
@@ -88,7 +96,7 @@ exports.getone = (req,res)=>{
 }
 
 exports.getlatest = (req,res)=>{
-    var stream=fs.createReadStream("users.txt");
+    var stream=fs.createReadStream(filename);
     var requiredData='';
     stream.on("data",(chunk)=>{
         requiredData+=chunk;
@@ -102,7 +110,8 @@ exports.getlatest = (req,res)=>{
         var datas = requiredData.split("\r\n");
         datas.pop();
         if(datas.length>0){
-            res.send({data:datas[datas.length-1]});
+            var x=JSON.parse(datas[datas.length-1]);
+            res.send({data:x});
         }
         else{
             res.json({

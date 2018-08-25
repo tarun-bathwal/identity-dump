@@ -1,6 +1,5 @@
 /node_modules
 package-lock.json
-package-lock.json~
-users.txt
-users.txt~
-package.json~
+*~
+*.txt
+.env

@@ -5,9 +5,13 @@ Get up and running<br />
 1. git clone https://github.com/tarun-bathwal/identity-dump.git <br />
 2. cd identity-dump<br />
 3. npm install<br />
-  //MAKE SURE YOU EDIT THE ./controllers/users.js file to include your own mailgun api key and mailgun domain to get the email     services started.<br />
-4. npm run test // this command runs the tests. All the 6 tests must pass correctly.<br />
-5. npm run start // this starts the development server. You can now use POSTMAN to hit the APIs.<br />
+4. create a .env file in the root folder and enter the following code in it:<br />
+mailgunkey=your_mailgun_key<br />
+mailgundomain=your_mailgun_domain<br />
+If you don't perform this step, then the server doesn't work<br />
+If you don't have a valid mailgunkey or mailgundomain, the server won't be able to send you the email, though it will still create an entry in the required file. So, even if you don't have mailgun key and domain, enter any string without quotes in the .env file<br />
+4. npm run test // this command runs the tests. All the 6 tests must pass correctly. Data is written in testuser.txt file in the root folder. On every test run, testuser.txt is deleted and created new, so it will have only one entry at max.<br />
+5. npm run start // this starts the development server. You can now use POSTMAN to hit the APIs. Data is written and read from the users.txt file in the root folder.<br />
 <br />
 <br />
 APIs

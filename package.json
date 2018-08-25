@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "start": "export NODE_ENV=dev && node ./bin/www",
-    "test":"export NODE_ENV=test && mocha"
+    "test": "export NODE_ENV=test && mocha"
   },
   "dependencies": {
     "age-calculator": "^1.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
     "express": "~4.16.0",
     "fs": "0.0.1-security",

@@ -6,7 +6,7 @@ let {AgeFromDateString, AgeFromDate} = require('age-calculator');
 module.exports = ( req,res,next) => {
         const now = Date.now();
         const schema = joi.object().keys({
-            name : joi.string().alphanum().max(50).min(2).required(),
+            name : joi.string().regex(/^[\w\s]+$/).max(50).min(2).required(),
             email : joi.string().email({minDomainAtoms:2}).trim().required(),
             birthday : joi.date().allow('').format('YYYY-MM-DD').optional()
         });

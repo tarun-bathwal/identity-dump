@@ -7,10 +7,10 @@ const fs=require('fs');
 chai.use(chaiHttp);
 
 describe("file exists",()=>{
-    beforeEach((done)=>{
-        fs.stat('../testuser.txt',(err,stats)=>{
+    before((done)=>{
+        fs.stat('testuser.txt',(err,stats)=>{
             if(!err){
-                fs.unlink('../testuser.txt',(err)=>{
+                fs.unlink('testuser.txt',(err)=>{
                     if(!err)
                     {
                         done();
@@ -22,20 +22,8 @@ describe("file exists",()=>{
             }
         });
     });
-});
 
-describe("get all users",()=>{
-    it('it should get all users',(done)=>{
-        chai.request(server)
-        .get('/all')
-        .end((err,res)=>{
-            res.should.have.status(200);
-            //chai.expect(res.body).to.be.a('string');
-            res.body.should.be.eql({});
-            done();
-        });
-    });
-});
+
 
 describe("post a user",()=>{
     it("should not post a user without email",(done)=>{
@@ -89,6 +77,7 @@ describe("post a user",()=>{
         };
         chai.request(server)
             .post('/write')
+            .set('content-type', 'application/x-www-form-urlencoded')
             .send(user)
             .end((err,res)=>{
                 res.should.have.status(200);
@@ -125,5 +114,20 @@ describe("get first user",()=>{
         });
     });
 });
+
+describe("get all users",()=>{
+    it('it should get all users',(done)=>{
+        chai.request(server)
+        .get('/all')
+        .end((err,res)=>{
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            done();
+        });
+    });
+});
+
+}); 
+
 
 
