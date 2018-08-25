@@ -8,25 +8,25 @@ module.exports = ( req,res,next) => {
         const schema = joi.object().keys({
             name : joi.string().regex(/^[\w\s]+$/).max(50).min(2).required(),
             email : joi.string().email({minDomainAtoms:2}).trim().required(),
-            birthday : joi.date().allow('').format('YYYY-MM-DD').optional()
+            birthday : joi.date().allow('').format('YYYY-MM-DD').required()
         });
         const data=req.body;
         let age= new AgeFromDateString(data.birthday).age;
         joi.validate(data,schema,{abortEarly:false},(err,value)=>{
             if(err)
             {
-                res.json({
+                res.status(400).json({
                     message : err
                 });
             }
             else if ( data.birthday!=='' && age<16 ){
-                res.stauts(200).json({
+                res.status(400).json({
                     message : "under age",
                     data : data
                 });
             }
             else if (data.birthday!=='' &&  age > 120 ){
-                res.stauts(200).json({
+                res.status(400).json({
                     message : "over age",
                     data : data
                 });

@@ -31,12 +31,12 @@ exports.adduser = function(req,res){
         var mailgun = new Mailgun({apiKey: api_key, domain: domain});
         mailgun.messages().send(maildata, function (err, body) {
             if (err) {
-                res.json({
-                    message: "could not send mail"
+                res.status(201).json({
+                    message: "could not send mail but json written to text file"
                 });
             }
             else{
-                res.json({
+                res.status(201).json({
                     message:"successfully written to text file"
                 });
             }
@@ -52,7 +52,7 @@ exports.getuser = (req,res)=>{
         requiredData+=chunk;
     });
     stream.on("error",()=>{
-        res.json({
+        res.status(404).json({
             message:"no user exists"
         });
     });
@@ -76,7 +76,7 @@ exports.getone = (req,res)=>{
         requiredData+=chunk;
     });
     stream.on("error",()=>{
-        res.json({
+        res.status(404).json({
             message:"no user exists"
         });
     });
@@ -85,10 +85,10 @@ exports.getone = (req,res)=>{
         datas.pop();
         if(id<=datas.length && id>=1){
             var x=JSON.parse(datas[id-1]);
-            res.json({data:x});
+            res.status(200).json({data:x});
         }
         else{
-            res.json({
+            res.status(404).json({
                 message : "there doesn't exist a user corresponding to "+id
             });
         }
@@ -102,7 +102,7 @@ exports.getlatest = (req,res)=>{
         requiredData+=chunk;
     });
     stream.on("error",()=>{
-        res.json({
+        res.status(404).json({
             message:"no user exists"
         });
     });
@@ -111,10 +111,10 @@ exports.getlatest = (req,res)=>{
         datas.pop();
         if(datas.length>0){
             var x=JSON.parse(datas[datas.length-1]);
-            res.send({data:x});
+            res.status(200).send({data:x});
         }
         else{
-            res.json({
+            res.status(404).json({
                 message : "there doesn't exist a user yet"
             });
         }

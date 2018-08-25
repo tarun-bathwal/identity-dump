@@ -36,7 +36,7 @@ describe("post a user",()=>{
             .post('/write')
             .send(user)
             .end((err,res)=>{
-                res.should.have.status(200);
+                res.should.have.status(400);
                 res.body.should.be.a('object');
                 res.body.should.have.property('message');
                 res.body.message.should.have.property('details');
@@ -58,7 +58,7 @@ describe("post a user",()=>{
             .post('/write')
             .send(user)
             .end((err,res)=>{
-                res.should.have.status(200);
+                res.should.have.status(400);
                 res.body.should.be.a('object');
                 res.body.should.have.property('message');
                 res.body.message.should.have.property('details');
@@ -80,7 +80,7 @@ describe("post a user",()=>{
             .set('content-type', 'application/x-www-form-urlencoded')
             .send(user)
             .end((err,res)=>{
-                res.should.have.status(200);
+                res.should.have.status(201);
                 res.body.should.be.a('object');
                 res.body.should.have.property('message');
                 done();
