@@ -21,7 +21,13 @@ POST /write<br />
 KEYS ( payload ) : name email birthday<br />
 send as x-www-form-urlencoded ( from postman ) <br />
 name is of type string, email is of type email, birthday is a date of format 'YYYY-MM-DD'<br />
-on success, it returns<br />
+an example for POST request would be <br />
+{<br />
+	"name":"your name", <br />
+	"email":"email@yahoo.com", <br />
+	"birthday":"2000-09-27" <br />
+} <br />
+on success, it returns<br /> 
 {<br />
   "message":"successfully written to text file"<br />
 }<br />
